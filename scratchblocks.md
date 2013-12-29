@@ -22,7 +22,8 @@ Each document consists of zero or more scripts surrounded by optional whitespace
 
 Each script begins with an optional hat block and must contain at least one block in total. Scripts can also be individual reporter blocks.
 
-    script = block (WS !hat block)* / reporter
+    script = reporter &(NL / EOF)
+           / block (WS !hat block)*
 
 Primitive hat blocks and block definitions are recognized as hats, as are normal blocks with hat annotations:
 
