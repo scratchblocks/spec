@@ -35,6 +35,7 @@ Primitive hat blocks and block definitions are recognized as hats, as are normal
         / args "when" args "backdrop" args "switches" args "to" args
         / args "when" args ">" args
         / args "when" args "I" args "receive" args
+        / args "when" args "distance" args "<" args
         / "define" S parts?
 
     green_flag = "gf"

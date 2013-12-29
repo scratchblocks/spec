@@ -78,6 +78,12 @@ hat
       parts: se(p)
     }
   }
+  / p:(args "when" args "distance" args "<" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
   / l:"define" S p:parts? {
     return {
       type: 'define',
