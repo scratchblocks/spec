@@ -10,13 +10,13 @@ The scratchblocks language allows users to describe [Scratch][] scripts with a h
 
 This document formally and completely specifies the scratchblocks language. Implementors should use it as the definitive reference for the language syntax and semantics. Issues should be [reported][repo-new-issue] on the [Github repository][repo], and changes should be proposed by [filing][repo-new-pull] a pull request.
 
-The formal grammar for scratchblocks programs is a [parsing expression grammar][peg].
+The formal grammar for scratchblocks programs is written as a [parsing expression grammar][peg].
 
 ## Syntax
 
-Each document consists of zero or more scripts surrounded by optional whitespace.x
+Each document consists of zero or more scripts surrounded by optional whitespace.
 
-    document = WS? (script WS?)*
+    document = WS? (script WS)* WS?
 
 **Note:** This implies that an empty document valid.
 
