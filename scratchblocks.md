@@ -46,7 +46,8 @@ Boolean reporter blocks are delimited with angle brackets. Other reporters are d
 
 Blocks have a flexible syntax. They may contain any number of labels, inputs, or nested reporter blocks, collectively referred to as **parts**. They may optionally have **annotations**, which tell the parser how to display the block
 
-    block = parts ("::" S? non_hat_annotations)?
+    block = parts block_annotations?
+    block_annotations = "::" S? non_hat_annotations
 
     parts = S? part (S part)* S?
 
