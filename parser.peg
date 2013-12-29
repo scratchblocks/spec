@@ -106,13 +106,6 @@ reporter
       annotations: b.annotations
     }
   }
-  / "〈" b:block "〉" {
-    return {
-      type: 'boolean',
-      parts: b.parts,
-      annotations: b.annotations
-    }
-  }
 
 block
   = p:parts a:block_annotations? {
@@ -158,7 +151,7 @@ num_input
 NUMBER = $[0-9.e\x2D]*
 
 bool_input
-  = "<" S? (">" / &(NL / EOF)) / "〈" S? ("〉" / &(NL / EOF)) {
+  = "<" S? (">" / &(NL / EOF)) {
     return {
       type: 'boolean'
     }
