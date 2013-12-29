@@ -16,7 +16,7 @@ The formal grammar for scratchblocks programs is written as a [parsing expressio
 
 Each document consists of zero or more scripts surrounded by optional whitespace.
 
-    document = WS? (script WS)* WS?
+    document = WS? (script WS?)*
 
 **Note:** This implies that an empty document valid.
 
