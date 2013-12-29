@@ -75,7 +75,7 @@ Color inputs look like text inputs, but use hexadecimal color notation.
 
     color_input = "[" COLOR ("]" / & (NL / EOF))
 
-    COLOR = ("#" [0-9a-f]i [0-9a-f]i [0-9a-f]i ([0-9a-f]i [0-9a-f]i [0-9a-f]i)?)
+    COLOR = "#" [0-9a-f]i [0-9a-f]i [0-9a-f]i ([0-9a-f]i [0-9a-f]i [0-9a-f]i)?
 
 Dropdown inputs end with ` v`.
 
