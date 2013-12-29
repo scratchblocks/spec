@@ -20,10 +20,11 @@ Each document consists of zero or more scripts surrounded by optional whitespace
 
 **Note:** This implies that an empty document valid.
 
-Each script begins with an optional hat block and must contain at least one block in total. Scripts can also be individual reporter blocks.
+Each script begins with an optional hat block and must contain at least one block in total. Scripts can also be individual reporter blocks or freestanding comments.
 
-    script = reporter &(NL / EOF)
-           / (hat / block) (WS !hat block)*
+    script = comment
+           / reporter comment? &(NL / EOF)
+           / (hat / block) comment? (WS !hat block comment?)*
 
 Primitive hat blocks and block definitions are recognized as hats, as are normal blocks with hat annotations:
 
@@ -61,7 +62,7 @@ Blocks have a flexible syntax. They may contain any number of labels, inputs, or
 
 Labels can contain any characters except whitespace
 
-    label = !("::" (S / EOF)) [^}>)\] \t\r\n]+
+    label = !("::" (S / EOF) / "//") [^}>)\] \t\r\n]+
 
 Numeric inputs can contain any sequence of numeric characters, even if the result is not a valid number. This matches the behavior of the Scratch studio.
 
@@ -98,6 +99,12 @@ Annotations allow the user to explicitly describe the shape, color, and other at
 
     non_hat_annotation = !("hat" ([ \t\r\n\])>] / EOF)) ANNOTATION
     ANNOTATION = [^ \t\r\n\])>]+
+
+### Comments
+
+Comments begin with `//` and extend to the end of the line.
+
+    comment = S? "//" S? [^\r\n]+
 
 ### Whitespace
 

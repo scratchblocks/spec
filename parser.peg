@@ -16,8 +16,23 @@ document
   }
 
 script
-  = r:reporter &(NL / EOF) { return [r] }
-  / h:(hat / block) t:(WS !hat block)* { return list(h, t, 2) }
+  = c:comment {
+    return {
+      type: 'comment',
+      value: c
+    }
+  }
+  / r:reporter c:comment? &(NL / EOF) {
+    r.comment = c
+    return [r]
+  }
+  / h:(hat / block) c:comment? t:(WS !hat block comment?)* {
+    h.comment = c
+    return [h].concat(t.map(function(d) {
+      d[2].comment = d[3]
+      return d[2]
+    }))
+  }
 
 hat
   = p:parts "::" S? a:hat_annotations {
@@ -130,7 +145,7 @@ arg
   / reporter
 
 label
-  = !("::" (S / EOF)) c:$[^}>)\] \t\r\n]+ { return c }
+  = !("::" (S / EOF) / "//") c:$[^}>)\] \t\r\n]+ { return c }
 
 num_input
   = "(" c:NUMBER (")" / &(NL / EOF)) {
@@ -198,6 +213,9 @@ non_hat_annotation
   = !("hat" ([ \t\r\n\])>] / EOF)) c:$ANNOTATION { return c }
 
 ANNOTATION = $[^ \t\r\n\])>]+
+
+comment
+  = S? "//" S? c:$[^\r\n]+ { return c }
 
 WS = $((S? NL)+ S?)
 S = $[ \t]+
