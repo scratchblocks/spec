@@ -22,7 +22,7 @@ Each document consists of zero or more scripts surrounded by optional whitespace
 
 Each script begins with an optional hat block and must contain at least one block in total. Scripts can also be individual reporter blocks.
 
-    script = (hat / block) (WS block)* / reporter
+    script = block (WS !hat block)* / reporter
 
 Primitive hat blocks and block definitions are recognized as hats, as are normal blocks with hat annotations:
 
@@ -60,42 +60,42 @@ Blocks have a flexible syntax. They may contain any number of labels, inputs, or
 
 Labels can contain any characters except whitespace
 
-    label = ! ("::" (S / EOF)) [^}>)\] \t\r\n]+
+    label = !("::" (S / EOF)) [^}>)\] \t\r\n]+
 
 Numeric inputs can contain any sequence of numeric characters, even if the result is not a valid number. This matches the behavior of the Scratch studio.
 
-    num_input = "(" NUMBER (")" / & (NL / EOF))
+    num_input = "(" NUMBER (")" / &(NL / EOF))
 
     NUMBER = [0-9.e\x2D]*
 
 Boolean inputs are empty angle brackets. They may contain whitespace.
 
-    bool_input = "<" S? (">" / & (NL / EOF)) / "〈" S? ("〉" / & (NL / EOF))
+    bool_input = "<" S? (">" / &(NL / EOF)) / "〈" S? ("〉" / &(NL / EOF))
 
 Color inputs look like text inputs, but use hexadecimal color notation.
 
-    color_input = "[" COLOR ("]" / & (NL / EOF))
+    color_input = "[" COLOR ("]" / &(NL / EOF))
 
     COLOR = "#" [0-9a-f]i [0-9a-f]i [0-9a-f]i ([0-9a-f]i [0-9a-f]i [0-9a-f]i)?
 
 Dropdown inputs end with ` v`.
 
-    num_dropdown_input = "(" NUMBER " v" ( ")" / & (NL / EOF))
-    dropdown_input = "[" (! " v" [^\x5D])* " v" ("]" / & (NL / EOF))
+    num_dropdown_input = "(" NUMBER " v" ( ")" / &(NL / EOF))
+    dropdown_input = "[" (!" v" [^\x5D])* " v" ("]" / &(NL / EOF))
 
 Text inputs may contain any character except a closing bracket.
 
-    text_input = "[" [^\x5D]* ("]" / & (NL / EOF))
+    text_input = "[" [^\x5D]* ("]" / &(NL / EOF))
 
 ### Annotations
 
 Annotations allow the user to explicitly describe the shape, color, and other attributes of a block.
 
-    hat_annotations = & (non_hat_annotations S "hat") annotations
+    hat_annotations = &(non_hat_annotations S "hat") annotations
     non_hat_annotations = non_hat_annotation (S non_hat_annotation)*
     annotations = ANNOTATION (S ANNOTATION)*
 
-    non_hat_annotation = ! ("hat" ([ \t\r\n\])>] / EOF)) ANNOTATION
+    non_hat_annotation = !("hat" ([ \t\r\n\])>] / EOF)) ANNOTATION
     ANNOTATION = [^ \t\r\n\])>]+
 
 ### Whitespace
@@ -103,7 +103,7 @@ Annotations allow the user to explicitly describe the shape, color, and other at
     WS = ((S? NL)+ S?)
     S = [ \t]+
     NL = [\r\n]+
-    EOF = ! .
+    EOF = !.
 
 <!-- References -->
 
