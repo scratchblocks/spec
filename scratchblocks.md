@@ -72,7 +72,7 @@ Numeric inputs can contain any sequence of numeric characters, even if the resul
 
 Boolean inputs are empty angle brackets. They may contain whitespace.
 
-    bool_input = "<" S? (">" / &(NL / EOF)) / "〈" S? ("〉" / &(NL / EOF))
+    bool_input = "<" S? (">" / &(NL / EOF))
 
 Color inputs look like text inputs, but use hexadecimal color notation.
 
