@@ -5,6 +5,9 @@
     if (i == null) i = 1
     return [h].concat(t.map(function(d) { return d[i] }))
   }
+  function se(p) {
+    return Array.prototype.concat.apply([], p)
+  }
 }
 
 document
@@ -24,12 +27,42 @@ hat
       annotations: a
     }
   }
-  / args "when" args green_flag args "clicked" args
-  / args "when" args "key" args "pressed" args
-  / args "when" args "this" args "sprite" args "clicked" args
-  / args "when" args "backdrop" args "switches" args "to" args
-  / args "when" args ">" args
-  / args "when" args "I" args "receive" args
+  / p:(args "when" args green_flag args "clicked" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
+  / p:(args "when" args "key" args "pressed" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
+  / p:(args "when" args "this" args "sprite" args "clicked" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
+  / p:(args "when" args "backdrop" args "switches" args "to" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
+  / p:(args "when" args ">" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
+  / p:(args "when" args "I" args "receive" args) {
+    return {
+      type: 'hat',
+      parts: se(p)
+    }
+  }
   / "define" S block?
 
 green_flag
