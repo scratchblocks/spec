@@ -1,0 +1,167 @@
+// [ ][ ][ ][ ].+((\n([ ][ ][ ][ ].+)?)+\n)?
+
+{
+  function list(h, t, i) {
+    if (i == null) i = 1
+    return [h].concat(t.map(function(d) { return d[i] }))
+  }
+}
+
+document
+  = WS? s:(script WS?)* {
+    return s.map(function(d) { return d[0] })
+  }
+
+script
+  = r:reporter &(NL / EOF) { return [r] }
+  / h:block t:(WS !hat block)* { return list(h, t, 2) }
+
+hat
+  = p:parts "::" S? a:hat_annotations {
+    return {
+      type: 'hat',
+      parts: p,
+      annotations: a
+    }
+  }
+  / args "when" args green_flag args "clicked" args
+  / args "when" args "key" args "pressed" args
+  / args "when" args "this" args "sprite" args "clicked" args
+  / args "when" args "backdrop" args "switches" args "to" args
+  / args "when" args ">" args
+  / args "when" args "I" args "receive" args
+  / "define" S block?
+
+green_flag
+  = "gf"
+  / "flag"
+  / "green" args "flag"
+  / "@green-flag"
+
+reporter
+  = "(" b:block ")" {
+    return {
+      type: 'reporter',
+      parts: b.parts,
+      annotations: b.annotations
+    }
+  }
+  / "<" b:block ">" {
+    return {
+      type: 'boolean',
+      parts: b.parts,
+      annotations: b.annotations
+    }
+  }
+  / "〈" b:block "〉" {
+    return {
+      type: 'boolean',
+      parts: b.parts,
+      annotations: b.annotations
+    }
+  }
+
+block
+  = p:parts a:block_annotations? {
+    return {
+      parts: p,
+      annotations: a || []
+    }
+  }
+
+block_annotations
+  = "::" S? a:non_hat_annotations { return a }
+
+parts
+  = S? h:part t:(S part)* S? { return list(h, t) }
+
+part
+  = a:arg { return a }
+  / l:label { return l }
+
+args
+  = (S arg)* S?
+
+arg
+  = num_input
+  / bool_input
+  / color_input
+  / num_dropdown_input
+  / dropdown_input
+  / text_input
+  / reporter
+
+label
+  = !("::" (S / EOF)) c:$[^}>)\] \t\r\n]+ { return c }
+
+num_input
+  = "(" c:NUMBER (")" / &(NL / EOF)) {
+    return {
+      type: 'number',
+      value: c
+    }
+  }
+
+NUMBER = $[0-9.e\x2D]*
+
+bool_input
+  = "<" S? (">" / &(NL / EOF)) / "〈" S? ("〉" / &(NL / EOF)) {
+    return {
+      type: 'boolean'
+    }
+  }
+
+color_input
+  = "[" c:COLOR ("]" / &(NL / EOF)) {
+    return {
+      type: 'color',
+      value: c
+    }
+  }
+
+COLOR = $("#" [0-9a-f]i [0-9a-f]i [0-9a-f]i ([0-9a-f]i [0-9a-f]i [0-9a-f]i)?)
+
+num_dropdown_input
+  = "(" c:NUMBER " v" ( ")" / &(NL / EOF)) {
+    return {
+      type: 'number',
+      dropdown: true,
+      value: c
+    }
+  }
+
+dropdown_input
+  = "[" c:$(!" v" [^\x5D])* " v" ("]" / &(NL / EOF)) {
+    return {
+      type: 'string',
+      dropdown: true,
+      value: c
+    }
+  }
+
+text_input
+  = "[" c:$[^\x5D]* ("]" / &(NL / EOF)) {
+    return {
+      type: 'string',
+      value: c
+    }
+  }
+
+hat_annotations
+  = &(non_hat_annotations S "hat") a:annotations { return a }
+
+non_hat_annotations
+  = h:non_hat_annotation t:(S non_hat_annotation)* { return list(h, t) }
+
+annotations
+  = h:ANNOTATION t:(S ANNOTATION)* { return list(h, t) }
+
+non_hat_annotation
+  = !("hat" ([ \t\r\n\])>] / EOF)) c:$ANNOTATION { return c }
+
+ANNOTATION = $[^ \t\r\n\])>]+
+
+WS = $((S? NL)+ S?)
+S = $[ \t]+
+NL = $[\r\n]+
+EOF = !.
