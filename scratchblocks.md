@@ -44,7 +44,7 @@ Primitive hat blocks and block definitions are recognized as hats, as are normal
 
 Boolean reporter blocks are delimited with angle brackets. Other reporters are delimited with parentheses.
 
-    reporter = "(" block ")" / "<" block ">" / "〈" block "〉"
+    reporter = "(" block ")" / "<" block ">"
 
 Blocks have a flexible syntax. They may contain any number of labels, inputs, or nested reporter blocks, collectively referred to as **parts**. They may optionally have **annotations**, which tell the parser how to display the block
 
