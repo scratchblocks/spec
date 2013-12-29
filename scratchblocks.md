@@ -23,7 +23,7 @@ Each document consists of zero or more scripts surrounded by optional whitespace
 Each script begins with an optional hat block and must contain at least one block in total. Scripts can also be individual reporter blocks.
 
     script = reporter &(NL / EOF)
-           / block (WS !hat block)*
+           / (hat / block) (WS !hat block)*
 
 Primitive hat blocks and block definitions are recognized as hats, as are normal blocks with hat annotations:
 
@@ -34,7 +34,7 @@ Primitive hat blocks and block definitions are recognized as hats, as are normal
         / args "when" args "backdrop" args "switches" args "to" args
         / args "when" args ">" args
         / args "when" args "I" args "receive" args
-        / "define" S block?
+        / "define" S parts?
 
     green_flag = "gf"
                / "flag"
