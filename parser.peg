@@ -17,7 +17,7 @@ document
 
 script
   = r:reporter &(NL / EOF) { return [r] }
-  / h:block t:(WS !hat block)* { return list(h, t, 2) }
+  / h:(hat / block) t:(WS !hat block)* { return list(h, t, 2) }
 
 hat
   = p:parts "::" S? a:hat_annotations {
@@ -63,7 +63,12 @@ hat
       parts: se(p)
     }
   }
-  / "define" S block?
+  / l:"define" S p:parts? {
+    return {
+      type: 'define',
+      parts: [l, p]
+    }
+  }
 
 green_flag
   = "gf"
